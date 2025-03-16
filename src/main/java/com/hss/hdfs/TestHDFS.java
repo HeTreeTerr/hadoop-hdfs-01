@@ -1,11 +1,14 @@
 package com.hss.hdfs;
 
+import com.hss.constant.HadoopConfig;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.net.URI;
 
 
 /**
@@ -24,15 +27,19 @@ public class TestHDFS {
 
     @Before
     public void conn() throws Exception {
-        conf = new Configuration(true);
-        fs = FileSystem.get(conf);
+        conf = new Configuration();
+        fs = FileSystem.get(new URI(HadoopConfig.URL),conf,HadoopConfig.USER);
         System.out.println("===========create==========");
     }
 
     @Test
     public void mkdir() {
         try {
-            Boolean flag = fs.mkdirs(new Path("/java8-maven"));
+            Path dir = new Path("/usr/root/java8-maven");
+            if(fs.exists(dir)){
+                fs.delete(dir,true);
+            }
+            Boolean flag = fs.mkdirs(dir);
             System.out.println(flag);
         } catch (Exception e) {
             e.printStackTrace();
@@ -42,11 +49,6 @@ public class TestHDFS {
     @After
     public void close() throws Exception {
         System.out.println("===========close==========");
-        if(null != fs){
-            fs.close();
-        }
-        if(null != conf){
-            conf = null;
-        }
+        fs.close();
     }
 }
