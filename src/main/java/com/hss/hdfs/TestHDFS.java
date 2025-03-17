@@ -2,12 +2,17 @@ package com.hss.hdfs;
 
 import com.hss.constant.HadoopConfig;
 import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.FSDataOutputStream;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.IOUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.net.URI;
 
 
@@ -41,6 +46,19 @@ public class TestHDFS {
             }
             Boolean flag = fs.mkdirs(dir);
             System.out.println(flag);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void upload(){
+        try {
+            BufferedInputStream input = new BufferedInputStream(new FileInputStream(new File("./data/hello.txt")));
+            Path outFile = new Path("/usr/root/hello-out.txt");
+            FSDataOutputStream output = fs.create(outFile);
+
+            IOUtils.copyBytes(input,output,conf,true);
         } catch (Exception e) {
             e.printStackTrace();
         }
