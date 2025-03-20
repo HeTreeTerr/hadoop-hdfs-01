@@ -12,10 +12,15 @@ public interface HadoopConfig {
     /**
      * 连接地址
      */
-    String URL = "hdfs://cluster01:9000";
+    String URL = "hdfs://namenode:8020";
 
     /**
      * 用户
      */
     String USER = "root";
+
+    /**
+     * 副本
+     */
+    String REPLICATION = "1";
 }
