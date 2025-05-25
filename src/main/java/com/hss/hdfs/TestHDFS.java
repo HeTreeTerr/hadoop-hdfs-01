@@ -30,10 +30,17 @@ public class TestHDFS {
     public void conn() throws Exception {
         //环境变量
         System.setProperty("HADOOP_USER_NAME", HadoopConfig.USER);
+        System.setProperty("hadoop.home.dir", "D:\\software\\hadoop-2.6.5");
+        System.setProperty("hadoop.root.logger", "DEBUG,console");
         //创建HADOOP配置对象
         conf = new Configuration();
         conf.set("fs.defaultFS",HadoopConfig.URL);
         conf.set("dfs.replication",HadoopConfig.REPLICATION);
+
+        //conf.set("dfs.client.pipeline", "cluster01:50010");
+        // 设置超时时间
+        conf.set("dfs.client.socket-timeout", "300000");
+        conf.set("dfs.datanode.socket.write.timeout", "300000");
         //创建HDFS客户端
         fs = FileSystem.get(new URI(HadoopConfig.URL),conf,HadoopConfig.USER);
         System.out.println("===========create==========");
@@ -56,8 +63,9 @@ public class TestHDFS {
     @Test
     public void upload(){
         try {
-            Path putFile = new Path("file:///E:/data/hello.txt");
+            Path putFile = new Path("E:/data/hello.txt");
             Path outFile = new Path(HadoopConfig.URL + "/usr/root222/hello.txt");
+            fs.deleteOnExit(outFile);
             fs.copyFromLocalFile(false, true, putFile, outFile);
         } catch (Exception e) {
             e.printStackTrace();
@@ -67,7 +75,7 @@ public class TestHDFS {
     @Test
     public void delete() {
         try {
-            Path dir = new Path("/root/tempFile/hello-out.txt");
+            Path dir = new Path("/usr/root222/hello.txt");
             Boolean flag = false;
             if(fs.exists(dir)){
                 flag = fs.delete(dir,true);
