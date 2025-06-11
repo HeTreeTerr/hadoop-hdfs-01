@@ -73,6 +73,20 @@ public class TestHDFS {
     }
 
     @Test
+    public void download(){
+        try {
+            //待下载的路径（HDFS）
+            Path src  = new Path(HadoopConfig.URL + "/usr/root222/hello.txt");
+            //下载成功之后存放的路径
+            Path dst = new Path("E:/data/hello.txt");
+            //下载
+            fs.copyToLocalFile(false,src,dst,true);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    @Test
     public void delete() {
         try {
             Path dir = new Path("/usr/root222/hello.txt");
