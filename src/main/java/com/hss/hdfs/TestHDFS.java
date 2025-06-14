@@ -46,6 +46,9 @@ public class TestHDFS {
         System.out.println("===========create==========");
     }
 
+    /**
+     * 创建目录
+     */
     @Test
     public void mkdir() {
         try {
@@ -60,6 +63,9 @@ public class TestHDFS {
         }
     }
 
+    /**
+     * 上传文件
+     */
     @Test
     public void upload(){
         try {
@@ -72,13 +78,16 @@ public class TestHDFS {
         }
     }
 
+    /**
+     * 下载
+     */
     @Test
     public void download(){
         try {
             //待下载的路径（HDFS）
             Path src  = new Path(HadoopConfig.URL + "/usr/root222/hello.txt");
             //下载成功之后存放的路径
-            Path dst = new Path("E:/data/hello.txt");
+            Path dst = new Path("E:/data/hadoop-hello.txt");
             //下载
             fs.copyToLocalFile(false,src,dst,true);
         }catch (Exception e){
@@ -86,6 +95,9 @@ public class TestHDFS {
         }
     }
 
+    /**
+     * 删除
+     */
     @Test
     public void delete() {
         try {
@@ -100,6 +112,9 @@ public class TestHDFS {
         }
     }
 
+    /**
+     * 获取目录下文件集
+     */
     @Test
     public void getAllFile(){
         try {
